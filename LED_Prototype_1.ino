@@ -33,18 +33,18 @@ void loop() {
     
     pulse();
     //colorWave();
- 
+    //fountainPulse();
 }
 
 void pulse(){
   for(int offset = 0; offset < 5; ++offset){
     for(int i = 0; i < NUM_LEDS; i = i + 5){
       if(offset == 0){
-        leds[i+4] = CHSV(171, 255, cos8(0));
-        leds[i+3] = CHSV(171, 255, cos8(255/10));
+        leds[i] = CHSV(171, 255, cos8(0));
+        leds[i+1] = CHSV(171, 255, cos8(255/10));
         leds[i+2] = CHSV(171, 255, cos8(255/5));
-        leds[i+1] = CHSV(171, 255, cos8((3*255)/10));
-        leds[i] = CHSV(171, 255, cos8((2*255)/5));
+        leds[i+3] = CHSV(171, 255, cos8((3*255)/10));
+        leds[i+4] = CHSV(171, 255, cos8((2*255)/5));
       }
       else{
         CRGB temp = leds[i];
@@ -67,26 +67,27 @@ void colorWave(){
         leds[k] = CHSV(i, 255, 255);
       }
       FastLED.show();
-      delay(150);
+      delay(1000);
     }
   
 }
 
 void fountainPulse(){
 
-  int waveArray[5] = {0, 255/10, 255/5, (3*255)/10, (2*255)/5};
-  
-  for(int offset = 0; offset < 14; ++offset){
-      for(int i = 4; i < NUM_LEDS; i = i + 10){
-          if(offset == 0){
-            leds[i] = CHSV(0, 255, waveArray[0]);    
-            leds[i+1]= CHSV(0, 255, waveArray[0]);
-          }
-          else if(offset > 0 && offset < 5){
-            int smalls = offset;
-            int bigs = 1;
-          }
-      }
-    }  
-}
+  for(int i = 0; i < NUM_LEDS; i++){
+      
+      leds[i] = CRGB::Red;
+  }
+
+
+  int fullsender = 255 /5;  
+  for(int offset = 0; offset < 5; ++offset){
+    for(int i = 0; i < NUM_LEDS-5; ++i){
+      
+      leds[i].fadeLightBy(fullsender * (offset + 1));
+    }
+    FastLED.show();
+    delay(200);
+  }
+}  
   
