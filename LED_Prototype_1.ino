@@ -4,7 +4,7 @@
 #define MICROPHONE A5
 #define PI 3.14
 
-CRGB leds[NUM_LEDS];
+CRGBArray<NUM_LEDS> leds;
 //sudo chmod a+rw /dev/ttyUSB0
 
 void setup() {
@@ -18,20 +18,12 @@ void loop() {
   int soundValue = analogRead(MICROPHONE);
   Serial.println(soundValue);
 
-  /**if(soundValue >= 500){
-    for(int i = 0; i < NUM_LEDS; ++i){
-      leds[i] = CRGB::Blue;
-      }
-      FastLED.show();
-      delay(300);
-      for(int i = 0; i < NUM_LEDS; ++i){
-      leds[i] = CRGB::Black;
-      }
-      FastLED.show();
-      delay(300);
-    }**/
+   if(soundValue >= 500){
+    fountainPulse();
+    FastLED.show(); 
+   }
     
-    pulse();
+    //pulse();
     //colorWave();
     //fountainPulse();
 }
@@ -74,20 +66,113 @@ void colorWave(){
 
 void fountainPulse(){
 
-  for(int i = 0; i < NUM_LEDS; i++){
-      
-      leds[i] = CRGB::Red;
-  }
+  int stage0 = 255/5;
+  int stage1 = (2*255)/5;
+  int stage2 = (3*255)/5;
+  int stage3 = (4*255)/5;
+  int stage4 = 255;
 
+  for(int i = 0; i < 14; ++i){
+    for(int k = 4; k < NUM_LEDS; k = k + 10){
 
-  int fullsender = 255 /5;  
-  for(int offset = 0; offset < 5; ++offset){
-    for(int i = 0; i < NUM_LEDS-5; ++i){
-      
-      leds[i].fadeLightBy(fullsender * (offset + 1));
+      if(i == 0){
+          leds[k] = CHSV(255, 255, stage0);
+          leds[k-1]= CRGB::Black;
+          leds[k-2]= CRGB::Black;
+          leds[k-3]= CRGB::Black;
+          leds[k-4]= CRGB::Black;
+      }
+      else if(i == 1){
+          leds[k]= CHSV(255, 255, stage1);
+          leds[k-1]= CHSV(255, 255, stage0);
+          leds[k-2]=CRGB::Black;
+          leds[k-3]=CRGB::Black;
+          leds[k-4]=CRGB::Black;
+      }
+      else if(i == 2){
+          leds[k]= CHSV(255, 255, stage2);
+          leds[k-1]= CHSV(255, 255, stage1);
+          leds[k-2]= CHSV(255, 255, stage0);
+          leds[k-3]=CRGB::Black;
+          leds[k-4]=CRGB::Black;
+      }
+      else if(i == 3){
+          leds[k]= CHSV(255, 255, stage3);
+          leds[k-1]= CHSV(255, 255, stage2);
+          leds[k-2]= CHSV(255, 255, stage1);
+          leds[k-3]= CHSV(255, 255, stage0);
+          leds[k-4]=CRGB::Black;
+      }
+      else if(i == 4){
+         leds[k]= CHSV(255, 255, stage4);
+          leds[k-1]= CHSV(255, 255, stage3);
+          leds[k-2]= CHSV(255, 255, stage2);
+          leds[k-3]= CHSV(255, 255, stage1);
+          leds[k-4]= CHSV(255, 255, stage0);
+      }
+      else if(i == 5){
+          leds[k] =CHSV(255, 255, stage3);
+          leds[k-1]= CHSV(255, 255, stage4);
+          leds[k-2] =CHSV(255, 255, stage3);
+          leds[k-3] =CHSV(255, 255, stage2);
+          leds[k-4] =CHSV(255, 255, stage1);
+      }
+      else if(i == 6){
+          leds[k] =CHSV(255, 255, stage2);
+          leds[k-1] =CHSV(255, 255, stage3);
+          leds[k-2] =CHSV(255, 255, stage4);
+          leds[k-3] =CHSV(255, 255, stage3);
+          leds[k-4] =CHSV(255, 255, stage2);
+      }
+      else if(i == 7){
+          leds[k] =CHSV(255, 255, stage1);
+          leds[k-1]= CHSV(255, 255, stage2);
+          leds[k-2]= CHSV(255, 255, stage3);
+          leds[k-3]= CHSV(255, 255, stage4);
+          leds[k-4]= CHSV(255, 255, stage3);
+      }
+      else if(i == 8){
+        leds[k]= CHSV(255, 255, stage0);
+          leds[k-1]= CHSV(255, 255, stage1);
+          leds[k-2]= CHSV(255, 255, stage2);
+          leds[k-3] =CHSV(255, 255, stage3);
+          leds[k-4]= CHSV(255, 255, stage4);
+      }
+      else if(i == 9){
+          leds[k]=CRGB::Black;
+          leds[k-1]= CHSV(255, 255, stage0);
+          leds[k-2] =CHSV(255, 255, stage1);
+          leds[k-3] =CHSV(255, 255, stage2);
+          leds[k-4] =CHSV(255, 255, stage3);
+      }
+      else if(i == 10){
+          leds[k]=CRGB::Black;
+          leds[k-1]=CRGB::Black;
+          leds[k-2] =CHSV(255, 255, stage0);
+          leds[k-3] =CHSV(255, 255, stage1);
+          leds[k-4] =CHSV(255, 255, stage2);
+      }
+      else if(i == 11){
+          leds[k]=CRGB::Black;
+          leds[k-1]=CRGB::Black;
+          leds[k-2]=CRGB::Black;
+          leds[k-3]= CHSV(255, 255, stage0);
+          leds[k-4]= CHSV(255, 255, stage1);
+      }
+      else if(i == 12){
+        leds[k] = CRGB::Black;
+          leds[k-1]=CRGB::Black;
+          leds[k-2]=CRGB::Black;
+          leds[k-3]=CRGB::Black;
+          leds[k-4]= CHSV(255, 255, stage0);
+      }
+      else if(i == 13){
+        leds[k-4]= CRGB::Black;
+        }
+      leds(k+1, k+5) = leds(k, k-4);
     }
     FastLED.show();
-    delay(200);
+      delay(70); 
   }
 }  
   
